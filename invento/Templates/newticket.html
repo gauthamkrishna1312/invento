@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="dashboard">
+        <header class="header">
+            <h1>Invento New Ticket Registration</h1>
+        </header>
+        <main class="main-content-01">
+            <form action="upload" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="number" name="number" placeholder="TicketID" id="number" required>
+                <input type="text" name="name" placeholder="Customer Name" id="name" required>
+                <input type="date" name="date" placeholder="Puchase Date" id="date" required>
+                <input type="hidden" name="status" id="date" value="Active">
+                <button type="submit">Confirm & Add</button>
+            </form>
+        </main>
+        <footer class="footer">
+            <div class="event-details">Event Details</div>
+            <div class="copyright">&copy; 2023 Your Event. All rights reserved.</div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="{% static 'styles.css' %}"-->
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hai Invento</h1>
+    {% for ticket in tickets reversed %}
+    <p>{{ ticket.IDtkt }}</p>
+    <p>{{ ticket.name }}</p>
+    <p>{{ ticket.date }}</p>
+    {% if ticket.status != "Redeemed" %}
+    <form action="redeem" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+        <input type="hidden" name="statusupdate" value="Redeemed">
+        <button type="submit">Reddem Ticket</button>
+    </form>
+    {% else %}
+    <p>{{ ticket.status }}</p>
+    {% endif %}
+    <form action="delete" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+        <button type="submit">Delete Ticket</button>
+    </form>
+    {% endfor %}    
+</body>
+</html>
