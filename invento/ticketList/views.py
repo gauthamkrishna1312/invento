@@ -53,11 +53,12 @@ def search_ticket(request):
 
     if request.method == 'POST':
         ticket_id = request.POST['ticket_id']
-        try:
-            ticket = ticket_info.objects.get(IDtkt=ticket_id)
-            searched_tickets.append(ticket)
-        except ticket_info.DoesNotExist:
-            search_message = f"Ticket with ID {ticket_id} not found."
+        if ticket_id.isdigit():
+            searched_tickets = ticket_info.objects.filter(IDtkt__contains=ticket_id)
+            if not searched_tickets:
+                search_message = f"No tickets found containing '{ticket_id}'."
+        else:
+            search_message = "Invalid ticket ID format. Please enter a number."
 
     tickets = ticket_info.objects.all()
     return render(request, 'index.html', {'tickets': tickets, 'searched_tickets': searched_tickets, 'search_message': search_message})
