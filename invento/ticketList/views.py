@@ -64,7 +64,6 @@ def search_ticket(request):
     return render(request, 'index.html', {'tickets': tickets, 'searched_tickets': searched_tickets, 'search_message': search_message})
 
 
-
 def invento_login(request):
     if request.method == 'POST':
         username = request.POST['username']

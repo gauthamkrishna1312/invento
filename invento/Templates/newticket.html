@@ -12,6 +12,7 @@
         <header class="header">
             <h1>Invento New Ticket Registration</h1>
         </header>
+        <button><a href="{% url 'home' %}">Home</a></button>
         <main class="main-content-01">
             <form action="upload" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}

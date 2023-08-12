@@ -11,6 +11,9 @@
 <body>
     <h1>Hai Invento</h1>
 
+    <!--Home return button-->
+    <button><a href="{% url 'home' %}">Home</a></button>
+
     <!--Code for search box-->
     <form class="search-form" action="{% url 'search_ticket' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
