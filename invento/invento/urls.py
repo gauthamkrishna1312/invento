@@ -27,6 +27,7 @@ urlpatterns = [
     path('signin', views.signin, name='signin'),
     path('invento_login', views.invento_login, name='invento_login'),
     path('invento_logout', views.invento_logout, name='invento_logout'),
+    path('search_ticket', views.search_ticket, name='search_ticket'),
     #path('delete', views.delete, name='delete'),
 ]
  

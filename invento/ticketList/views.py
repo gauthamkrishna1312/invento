@@ -46,6 +46,24 @@ def signin(request):
     return render(request, 'signin.html')
 
 
+@login_required(login_url='invento_login')
+def search_ticket(request):
+    searched_tickets = []
+    search_message = ""
+
+    if request.method == 'POST':
+        ticket_id = request.POST['ticket_id']
+        try:
+            ticket = ticket_info.objects.get(IDtkt=ticket_id)
+            searched_tickets.append(ticket)
+        except ticket_info.DoesNotExist:
+            search_message = f"Ticket with ID {ticket_id} not found."
+
+    tickets = ticket_info.objects.all()
+    return render(request, 'index.html', {'tickets': tickets, 'searched_tickets': searched_tickets, 'search_message': search_message})
+
+
+
 def invento_login(request):
     if request.method == 'POST':
         username = request.POST['username']
