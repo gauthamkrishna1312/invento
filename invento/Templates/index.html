@@ -10,25 +10,38 @@
 </head>
 <body>
     <h1>Hai Invento</h1>
+
+    <form class="search-form" action="#" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" placeholder="Search ticket" name="ticket_id">
+        <button type="submit">Search</button>
+    </form>
+
+    <button><a href="new">New Ticket</a></button>
+    <button><a href="invento_logout">Log Out</a></button>
+
+
+    <!--Code to show tickets Entered-->
     {% for ticket in tickets reversed %}
     <p>{{ ticket.IDtkt }}</p>
-    <p>{{ ticket.name }}</p>
-    <p>{{ ticket.date }}</p>
+
     {% if ticket.status != "Redeemed" %}
     <form action="redeem" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
         <input type="hidden" name="statusupdate" value="Redeemed">
-        <button type="submit">Reddem Ticket</button>
+        <button type="submit">{{ ticket.status }} Click to Redeeme</button>
     </form>
     {% else %}
     <p>{{ ticket.status }}</p>
     {% endif %}
-    <form action="delete" method="POST" enctype="multipart/form-data">
+
+    <!--Code to delete tickets Entered-->
+    <!--<form action="delete" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
         <button type="submit">Delete Ticket</button>
-    </form>
+    </form>-->
     {% endfor %}    
 </body>
 </html>

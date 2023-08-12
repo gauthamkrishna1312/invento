@@ -16,8 +16,6 @@
             <form action="upload" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="number" name="number" placeholder="TicketID" id="number" required>
-                <input type="text" name="name" placeholder="Customer Name" id="name" required>
-                <input type="date" name="date" placeholder="Puchase Date" id="date" required>
                 <input type="hidden" name="status" id="date" value="Active">
                 <button type="submit">Confirm & Add</button>
             </form>
