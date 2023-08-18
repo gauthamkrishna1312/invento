@@ -5,26 +5,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Invento Ticketing Dashboard</title>
 </head>
 <body>
-    <div class="dashboard">
-        <header class="header">
-            <h1>Invento New Ticket Registration</h1>
-        </header>
-        <button><a href="{% url 'home' %}">Home</a></button>
-        <main class="main-content-01">
-            <form action="upload" method="POST" enctype="multipart/form-data">
+    <header>
+        <div class="container">
+            <h1>Invento Ticket Registering Dashboard</h1><br>
+            <button class="new-ticket-button"><a href="{% url 'home' %}">Home</a></button>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <form class="ticket-form" action="upload" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="number" name="number" placeholder="TicketID" id="number" required>
                 <input type="hidden" name="status" id="date" value="Active">
                 <button type="submit">Confirm & Add</button>
             </form>
-        </main>
-        <footer class="footer">
-            <div class="event-details">Event Details</div>
-            <div class="copyright">&copy; 2023 Your Event. All rights reserved.</div>
-        </footer>
-    </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; c_tech_guy. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

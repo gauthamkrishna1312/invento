@@ -5,72 +5,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--<link rel="stylesheet" href="{% static 'styles.css' %}"-->
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Invento Ticketing Dashboard</title>
 </head>
 <body>
-    <h1>Hai Invento</h1>
+    <header>
+        <div class="container">        
+            <button class="new-ticket-button"><a href="{% url 'home' %}">Home</a></button>
+            <button class="new-ticket-button"><a href="new">New Ticket</a></button>
+            <button class="new-ticket-button"><a href="invento_logout">Log Out</a></button><br><br>
+            <h1>Invento Ticketing Dashboard</h1>
+        </div>
 
-    <!--Home return button-->
-    <button><a href="{% url 'home' %}">Home</a></button>
+        <!--Code for search box-->
+        <form class="search-form" action="{% url 'search_ticket' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" placeholder="Search ticket" name="ticket_id">
+            <button type="submit">Search</button>
+        </form>
+    </header>
+    <main>
+        <div class="container">
+            {% if search_message %}
+                <div class="ticket-row">
+                    <div class="ticket-column">
+                        <p>{{ search_message }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if searched_tickets %}
+            <div class="ticket-row">
+                <div class="ticket-column">
+                    <h4>Search Results</h5>
+                </div>
+            </div>
+            {% for ticket in searched_tickets %}
+                <div class="ticket-row">
+                    <div class="ticket-column">
+                        <p>Ticket ID: {{ ticket.IDtkt }}</p><br>
+                    </div>
+                    <div class="ticket-column">
+                        {% if ticket.status != "Redeemed" %}
+                            <form action="redeem" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+                                <input type="hidden" name="statusupdate" value="Redeemed">
+                                <button type="submit" class="new-ticket-button">Status: {{ ticket.status }} Click to Redeeme</button>
+                            </form>
+                        {% else %}
+                            <p>Status: {{ ticket.status }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            {% endif %}
 
-    <!--Code for search box-->
-    <form class="search-form" action="{% url 'search_ticket' %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="text" placeholder="Search ticket" name="ticket_id">
-        <button type="submit">Search</button>
-    </form>
 
-    <button><a href="new">New Ticket</a></button>
-    <button><a href="invento_logout">Log Out</a></button>
-
-
+            <div class="ticket-row">
+                <div class="ticket-column">
+                    <h5>Tickets registered</h5>
+                </div>
+            </div>
+            {% for ticket in tickets reversed %}
+            <div class="ticket-row">
+                <div class="ticket-column">
+                    <p>Ticket ID: {{ ticket.IDtkt }}</p>
+                </div>
+                <div class="ticket-column">
+                    {% if ticket.status != "Redeemed" %}
+                    <form action="redeem" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+                        <input type="hidden" name="statusupdate" value="Redeemed">
+                        <button type="submit" class="new-ticket-button" >Status: {{ ticket.status }} Click to Redeeme</button>
+                    </form>
+                    {% else %}
+                    <p>Status: {{ ticket.status }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}    
+    </div>
+    </main>
+    <footer>
+        <div class="footer">
+            <p>&copy; c_tech_guy. All rights reserved.</p>
+        </div>
+    </footer>
     <!--Code to show tickets Entered and searched-->
 
-    {% if search_message %}
-    <p>{{ search_message }}</p>
-    {% endif %}
     
-    {% if searched_tickets %}
-    <h2>Searched Tickets:</h2>
-    <ul>
-        {% for ticket in searched_tickets %}
-        <li>{{ ticket.IDtkt }}</li>
-            {% if ticket.status != "Redeemed" %}
-                <form action="redeem" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
-                    <input type="hidden" name="statusupdate" value="Redeemed">
-                    <button type="submit">{{ ticket.status }} Click to Redeeme</button>
-                </form>
-            {% else %}
-            <p>{{ ticket.status }}</p>
-            {% endif %}
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
-    <h2>All Tickets:</h2>
-    {% for ticket in tickets reversed %}
-    <p>{{ ticket.IDtkt }}</p>
-
-    {% if ticket.status != "Redeemed" %}
-    <form action="redeem" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
-        <input type="hidden" name="statusupdate" value="Redeemed">
-        <button type="submit">{{ ticket.status }} Click to Redeeme</button>
-    </form>
-    {% else %}
-    <p>{{ ticket.status }}</p>
-    {% endif %}
-
-    <!--Code to delete tickets Entered-->
-    <!--<form action="delete" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
-        <button type="submit">Delete Ticket</button>
-    </form>-->
-    {% endfor %}    
 </body>
 </html>

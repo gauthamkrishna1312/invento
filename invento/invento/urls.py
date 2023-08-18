@@ -19,7 +19,8 @@ from django.urls import path
 from ticketList import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),    
+    
     path('', views.index, name='home'),
     path('new', views.addTkt, name='addticket'),
     path('upload', views.upload, name='upload'),
