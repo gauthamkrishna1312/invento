@@ -5,31 +5,34 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+#functions for passing all data from ticket_info model to index page
 @login_required(login_url='invento_login')
 def index(request):
     tickets = ticket_info.objects.all()
     return render(request, 'index.html', {'tickets': tickets})
 
 
+#Functions for activating the add ticket button on the index page
 @login_required(login_url='invento_login')
 def addTkt(request):
     return render(request, 'newticket.html')    
 
+#Crete new ticket functionality
 @login_required(login_url='invento_login')
 def upload(request):
     if request.method == 'POST':
         IDtkt = request.POST['number']
         status = request.POST['status']
-        ticket = ticket_info.objects.create(
-            IDtkt=IDtkt,
-            status=status
-        )
-        ticket.save()
-        return redirect('/')
+        if ticket_info.objects.filter(IDtkt=IDtkt).exists():
+            return render(request, 'newticket.html', {'error_message': 'Already registered'})
+        else :
+            ticket = ticket_info.objects.create(IDtkt=IDtkt, status=status)
+            ticket.save()
+            return render(request, 'newticket.html', {'error_message': 'Registered Successfully submit another ticket'})
     else:
         return redirect('/')
 
-
+#Redeem ticket functionality implemented here
 @login_required(login_url='invento_login')
 def redeem(request):
     if request.method == 'POST':
@@ -41,11 +44,12 @@ def redeem(request):
         return redirect('/')
 
 
+#Sign in functionality implemented here using django 
 @login_required(login_url='invento_login')
 def signin(request):
     return render(request, 'signin.html')
 
-
+#Code for searching tickets
 @login_required(login_url='invento_login')
 def search_ticket(request):
     searched_tickets = []
@@ -64,6 +68,7 @@ def search_ticket(request):
     return render(request, 'index.html', {'tickets': tickets, 'searched_tickets': searched_tickets, 'search_message': search_message})
 
 
+#code to implement vlunteer login feature
 def invento_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -80,14 +85,19 @@ def invento_login(request):
         return render(request, 'signin.html')
     
 
+#Code for implementing logout feature
 @login_required(login_url='invento_login')
 def invento_logout(request):
     logout(request)
     return redirect('invento_login')
 
-#def delete(request):
-#    if request.method == 'POST':
-#        IDtkt = request.POST['ticket_id']
-#        ticket = ticket_info.objects.get(IDtkt=IDtkt)
-#        ticket.delete()
-#        return redirect('/')
+
+
+#Code for adding delete tickets functionality 
+@login_required(login_url='invento_logout')
+def delete(request):
+    if request.method == 'POST':
+        IDtkt = request.POST['ticket_id']
+        ticket = ticket_info.objects.get(IDtkt=IDtkt)
+        ticket.delete()
+        return redirect('/')

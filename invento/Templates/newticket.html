@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
@@ -16,13 +16,15 @@
         </div>
     </header>
     <main>
+        <!--Form for creating a new ticket by entering ticket id-->
         <div class="container">
             <form class="ticket-form" action="upload" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="number" name="number" placeholder="TicketID" id="number" required>
                 <input type="hidden" name="status" id="date" value="Active">
                 <button type="submit">Confirm & Add</button>
-            </form>
+            </form><br>
+            <p>{{ error_message }}</p>
         </div>
     </main>
     <footer>

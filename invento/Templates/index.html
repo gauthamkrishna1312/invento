@@ -23,8 +23,10 @@
             <input type="text" placeholder="Search ticket" name="ticket_id">
             <button type="submit">Search</button>
         </form>
+
     </header>
     <main>
+        <!--Code for display,delete and redeem searched tickets-->
         <div class="container">
             {% if search_message %}
                 <div class="ticket-row">
@@ -50,8 +52,13 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
                                 <input type="hidden" name="statusupdate" value="Redeemed">
-                                <button type="submit" class="new-ticket-button">Status: {{ ticket.status }} Click to Redeeme</button>
-                            </form>
+                                <button type="submit" class="new-ticket-button" onclick="return confirmRedeem();">Status: {{ ticket.status }} Click to Redeeme</button>
+                            </form><br>
+                            <!-- <form action="delete" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+                                <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">{{ ticket.status }} Click to Delete</button>
+                            </form> -->
                         {% else %}
                             <p>Status: {{ ticket.status }}</p>
                         {% endif %}
@@ -59,8 +66,11 @@
                 </div>
             {% endfor %}
             {% endif %}
+            <!--Code for display,delete and redeem searched tickets ends-->
 
 
+
+            <!--Code for display,delete and redeem all the created tickets-->
             <div class="ticket-row">
                 <div class="ticket-column">
                     <h5>Tickets registered</h5>
@@ -77,23 +87,43 @@
                         {% csrf_token %}
                         <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
                         <input type="hidden" name="statusupdate" value="Redeemed">
-                        <button type="submit" class="new-ticket-button" >Status: {{ ticket.status }} Click to Redeeme</button>
-                    </form>
+                        <button type="submit" class="new-ticket-button" onclick="return confirmRedeem();">Status: {{ ticket.status }} Click to Redeeme</button>
+                    </form><br>
+                    <!-- <form action="delete" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+                        <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">{{ ticket.status }} Click to Delete</button>
+                    </form> -->
                     {% else %}
-                    <p>Status: {{ ticket.status }}</p>
+                    <p>Status: {{ ticket.status }}</p><br>
+                    <!-- <form action="delete" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+                        <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">{{ ticket.status }} Click to Delete</button>
+                    </form> -->
                     {% endif %}
                 </div>
             </div>
             {% endfor %}    
+            <!--Code for display,delete and redeem all the created tickets-->
     </div>
     </main>
+
+    <!--Footer section codes-->
     <footer>
         <div class="footer">
             <p>&copy; c_tech_guy. All rights reserved.</p>
         </div>
     </footer>
-    <!--Code to show tickets Entered and searched-->
 
-    
+    <!--JS code for giving alerts to delete and redeem uttons-->
+    <script>
+        // function confirmDelete(){
+        //     return confirm('Are you sure you want to delete');
+        // }
+        function confirmRedeem(){
+            return confirm('Are you sure you want to redeem it you can never undo it');
+        }
+    </script>
 </body>
 </html>
