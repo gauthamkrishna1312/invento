@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from ticketList.models import ticket_info
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from .decorators import restrict_to_user
 
 # Create your views here.
 
@@ -9,7 +10,9 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='invento_login')
 def index(request):
     tickets = ticket_info.objects.all()
-    return render(request, 'index.html', {'tickets': tickets})
+    current_user = request.user.username
+    useradmin = 'volunteer01'
+    return render(request, 'index.html', {'tickets': tickets,'current_user':current_user,'useradmin':useradmin})
 
 
 #Functions for activating the add ticket button on the index page
@@ -76,7 +79,7 @@ def invento_login(request):
         
         user = authenticate(username=username, password=password)
 
-        if user is not None:
+        if user is not None:    
             login(request, user)
             return redirect('/')
         else :
@@ -94,10 +97,15 @@ def invento_logout(request):
 
 
 #Code for adding delete tickets functionality 
-@login_required(login_url='invento_logout')
+@login_required(login_url='invento_login')
 def delete(request):
     if request.method == 'POST':
         IDtkt = request.POST['ticket_id']
         ticket = ticket_info.objects.get(IDtkt=IDtkt)
         ticket.delete()
         return redirect('/')
+
+
+@restrict_to_user('volunteer01')
+def useradmin(request):
+    return render(request, 'useradmin.html')
