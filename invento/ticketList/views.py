@@ -2,8 +2,6 @@ from django.shortcuts import render,redirect
 from ticketList.models import ticket_info
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .decorators import restrict_to_user
-
 # Create your views here.
 
 #functions for passing all data from ticket_info model to index page
@@ -104,8 +102,3 @@ def delete(request):
         ticket = ticket_info.objects.get(IDtkt=IDtkt)
         ticket.delete()
         return redirect('/')
-
-
-@restrict_to_user('volunteer01')
-def useradmin(request):
-    return render(request, 'useradmin.html')
