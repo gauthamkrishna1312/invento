@@ -12,7 +12,14 @@
     <header>
         <div class="container">
             <h1>Invento Ticket Registering Dashboard</h1><br>
-            <button class="new-ticket-button"><a href="{% url 'home' %}">Home</a></button>
+            <button class="new-ticket-button">
+                <!-- <a href="{% url 'home' %}">Home</a> -->
+                {% if direction == 'home' %}
+                    <a href="{% url 'home' %}">Home</a>
+                {% else %}
+                    <a href="{{direction}}">Home</a>
+                {% endif %}
+            </button>
         </div>
     </header>
     <main>

@@ -2,21 +2,26 @@ from django.shortcuts import render,redirect
 from ticketList.models import ticket_info
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 #functions for passing all data from ticket_info model to index page
 @login_required(login_url='invento_login')
 def index(request):
     tickets = ticket_info.objects.all()
-    current_user = request.user.username
-    useradmin = 'volunteer01'
-    return render(request, 'index.html', {'tickets': tickets,'current_user':current_user,'useradmin':useradmin})
+    return render(request, 'index.html', {'tickets': tickets})
 
 
 #Functions for activating the add ticket button on the index page
 @login_required(login_url='invento_login')
 def addTkt(request):
-    return render(request, 'newticket.html')    
+    if request.user is not None:
+        if request.user.is_superuser:
+            direction = 'eventLeadView'
+        else:
+            direction = 'home'
+
+    return render(request, 'newticket.html',{'direction':direction})    
 
 #Crete new ticket functionality
 @login_required(login_url='invento_login')
@@ -31,19 +36,10 @@ def upload(request):
             ticket.save()
             return render(request, 'newticket.html', {'error_message': 'Registered Successfully submit another ticket'})
     else:
-        return redirect('/')
-
-#Redeem ticket functionality implemented here
-@login_required(login_url='invento_login')
-def redeem(request):
-    if request.method == 'POST':
-        IDtkt = request.POST['ticket_id']
-        status = request.POST['statusupdate']
-        ticket = ticket_info.objects.get(IDtkt=IDtkt)
-        ticket.status = status
-        ticket.save()
-        return redirect('/')
-
+        if request.user.is_superuser:
+            return redirect('eventLeadView')
+        else:
+            return redirect('/')
 
 #Sign in functionality implemented here using django 
 @login_required(login_url='invento_login')
@@ -66,7 +62,13 @@ def search_ticket(request):
             search_message = "Invalid ticket ID format. Please enter a number."
 
     tickets = ticket_info.objects.all()
-    return render(request, 'index.html', {'tickets': tickets, 'searched_tickets': searched_tickets, 'search_message': search_message})
+    if request.user is not None:
+        if request.user.is_superuser:
+            return render(request, 'eventlead.html', {'tickets': tickets, 'searched_tickets': searched_tickets, 'search_message': search_message})
+        else:
+            return render(request, 'index.html', {'tickets': tickets, 'searched_tickets': searched_tickets, 'search_message': search_message})
+
+    
 
 
 #code to implement vlunteer login feature
@@ -79,7 +81,10 @@ def invento_login(request):
 
         if user is not None:    
             login(request, user)
-            return redirect('/')
+            if user.is_superuser :
+                return redirect('eventLeadView')
+            else :
+                return redirect('/')
         else :
             return render(request, 'signin.html', {'error_message': 'Invalid login credentials'})
     else :
@@ -101,4 +106,30 @@ def delete(request):
         IDtkt = request.POST['ticket_id']
         ticket = ticket_info.objects.get(IDtkt=IDtkt)
         ticket.delete()
-        return redirect('/')
+        if request.user.is_superuser:
+            return redirect('eventLeadView')
+        else:
+            return redirect('/')
+    if request.user.is_superuser:
+        return render(request,'eventlead.html', {'tickets': ticket})
+    else:
+        return render(request,'index.html',  {'tickets': ticket})
+
+#Redeem ticket functionality implemented here
+@login_required(login_url='invento_login')
+def redeem(request):
+    if request.method == 'POST':
+        IDtkt = request.POST['ticket_id']
+        status = request.POST['statusupdate']
+        ticket = ticket_info.objects.get(IDtkt=IDtkt)
+        ticket.status = status
+        ticket.save()
+        if request.user.is_superuser:
+            return redirect('eventLeadView')
+        else:
+            return redirect('/')
+    if request.user.is_superuser:
+        return render(request,'eventlead.html', {'tickets': ticket})
+    else:
+        return render(request,'index.html',  {'tickets': ticket})
+

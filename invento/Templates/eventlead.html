@@ -11,10 +11,10 @@
 <body>
     <header>
         <div class="container">        
-            <button class="new-ticket-button"><a href="{% url 'home' %}">Home</a></button>
-            <button class="new-ticket-button"><a href="{% url 'addticket' %}">New Ticket</a></button>
+            <button class="new-ticket-button"><a href="eventLeadView">Home</a></button>
+            <button class="new-ticket-button"><a href="new">New Ticket</a></button>
             <br><br>
-            <h1>Invento Ticketing Dashboard</h1>
+            <h1>Invento Ticketing Admin Dashboard</h1>
         </div>
         
         <!--Code for search box-->
@@ -54,15 +54,26 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
                                 <input type="hidden" name="statusupdate" value="Redeemed">
-                                <button type="submit" class="new-ticket-button" onclick="return confirmRedeem();">Click to Redeeme</button>
+                                <button type="submit" class="new-ticket-button">Redeeme</button>
                             </form><br>
-                            <!-- <form action="delete" method="POST" enctype="multipart/form-data">
+                            <form action="delete" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
-                                <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">{{ ticket.status }} Click to Delete</button>
-                            </form> -->
+                                <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">Delete</button>
+                            </form>
                         {% else %}
-                            <p>{{ ticket.status }}</p>
+                            <p>{{ ticket.status }}</p><br>
+                            <form action="delete" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+                                <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">Delete</button>
+                            </form><br>
+                            <form action="unredeem" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+                                <input type="hidden" name="statusupdate" value="Active">
+                                <button type="submit" class="new-ticket-button">Activate</button>
+                            </form><br>
                         {% endif %}
                     </div>
                 </div>
@@ -90,20 +101,26 @@
                         {% csrf_token %}
                         <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
                         <input type="hidden" name="statusupdate" value="Redeemed">
-                        <button type="submit" class="new-ticket-button" onclick="return confirmRedeem();">Redeeme</button>
+                        <button type="submit" class="new-ticket-button">Redeeme</button>
                     </form><br>
-                    <!-- <form action="delete" method="POST" enctype="multipart/form-data">
+                    <form action="delete" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
-                        <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">{{ ticket.status }} Click to Delete</button>
-                    </form> -->
+                        <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">Delete</button>
+                    </form>
                     {% else %}
                     <p>{{ ticket.status }}</p><br>
-                    <!-- <form action="delete" method="POST" enctype="multipart/form-data">
+                    <form action="delete" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
-                        <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">{{ ticket.status }} Click to Delete</button>
-                    </form> -->
+                        <button type="submit" class="new-ticket-button" onclick="return confirmDelete();">Delete</button>
+                    </form><br>
+                    <form action="unredeem" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="ticket_id" value="{{ ticket.IDtkt }}">
+                        <input type="hidden" name="statusupdate" value="Active">
+                        <button type="submit" class="new-ticket-button">Activate</button>
+                    </form><br>
                     {% endif %}
                 </div>
             </div>
@@ -121,12 +138,12 @@
 
     <!--JS code for giving alerts to delete and redeem uttons-->
     <script>
-        // function confirmDelete(){
-        //     return confirm('Are you sure you want to delete');
-        // }
-        function confirmRedeem(){
-            return confirm('Are you sure you want to redeem it you can never undo it');
+        function confirmDelete(){
+            return confirm('Are you sure you want to delete');
         }
+        // function confirmRedeem(){
+        //     return confirm('Are you sure you want to redeem it you can never undo it');
+        // }
     </script>
 </body>
-</html>
+</html> 
