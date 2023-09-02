@@ -21,13 +21,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
 
+SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = 'django-insecure-tqd32!4d*+t1u+4k3#*%v0()qe3gh4z_pc+z0xp2h^tvw$@mj0'
 # SECURITY WARNING: don't run with debug turned on in production!
+
+
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"     
 # DEBUG = True
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split()
 
+
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split()
+# ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -77,16 +82,26 @@ WSGI_APPLICATION = 'invento.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'invento_db_p5ng', 
+#         'USER': 'invento_db_p5ng_user',
+#         'PASSWORD': 'ppJkaTkLhAOZOotMd10cY5bOmuQ8PoqX',
+#         'HOST': 'https://invento.onrender.com/', 
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
     }
 }
 
 invento_db = os.environ.get("DATABASE_URL")
-# DATABASES['default'] = dj_database_url.parse("postgres://invento_db_p5ng_user:ppJkaTkLhAOZOotMd10cY5bOmuQ8PoqX@dpg-cjpa45e1208c73fhiul0-a.oregon-postgres.render.com/invento_db_p5ng")
 DATABASES['default'] = dj_database_url.parse(invento_db)
+# DATABASES['default'] = dj_database_url.parse("postgres://invento_db_p5ng_user:ppJkaTkLhAOZOotMd10cY5bOmuQ8PoqX@dpg-cjpa45e1208c73fhiul0-a.oregon-postgres.render.com/invento_db_p5ng")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
