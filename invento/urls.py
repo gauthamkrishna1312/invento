@@ -21,6 +21,6 @@ from ticketList import views
 urlpatterns = [
     path('admin/', admin.site.urls),    
     path('', include('ticketList.urls')),
-    path('eventLeadView', include('eventLead.urls')),
+    path('', include('eventLead.urls')),
 ]
  
