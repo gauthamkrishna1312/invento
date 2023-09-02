@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"     
+DEBUG = os.environ.get("DEBUG")    
 # DEBUG = True
 
 
@@ -63,7 +63,7 @@ ROOT_URLCONF = 'invento.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'Templates')],
+        'DIRS': ['Templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,24 +82,12 @@ WSGI_APPLICATION = 'invento.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'invento_db_p5ng', 
-#         'USER': 'invento_db_p5ng_user',
-#         'PASSWORD': 'ppJkaTkLhAOZOotMd10cY5bOmuQ8PoqX',
-#         'HOST': 'https://invento.onrender.com/', 
-#         'PORT': '5432',
-#     }
-# }
-
+invento_db = os.environ.get("DATABASE_URL")
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
     }
 }
-
-invento_db = os.environ.get("DATABASE_URL")
 DATABASES['default'] = dj_database_url.parse(invento_db)
 # DATABASES['default'] = dj_database_url.parse("postgres://invento_db_p5ng_user:ppJkaTkLhAOZOotMd10cY5bOmuQ8PoqX@dpg-cjpa45e1208c73fhiul0-a.oregon-postgres.render.com/invento_db_p5ng")
 
