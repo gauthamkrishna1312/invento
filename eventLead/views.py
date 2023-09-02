@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='invento_login')
 def eventLeadView(request):
     tickets = ticket_info.objects.all()
-    return render(request,'eventLead.html', {'tickets': tickets})
+    return render(request,'eventlead.html', {'tickets': tickets})
 
 @login_required(login_url='invento_login')
 def unredeem(request):
