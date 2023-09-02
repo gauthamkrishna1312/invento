@@ -25,8 +25,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"     
-
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+# DEBUG = True
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split()
 
 
 # Application definition
@@ -84,7 +84,9 @@ DATABASES = {
 }
 
 invento_db = os.environ.get("DATABASE_URL")
+# DATABASES['default'] = dj_database_url.parse("postgres://invento_db_p5ng_user:ppJkaTkLhAOZOotMd10cY5bOmuQ8PoqX@dpg-cjpa45e1208c73fhiul0-a.oregon-postgres.render.com/invento_db_p5ng")
 DATABASES['default'] = dj_database_url.parse(invento_db)
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
